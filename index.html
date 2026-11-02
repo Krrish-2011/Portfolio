@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Krrish Kumar | Esports & Automotive Enthusiast</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;500;600;700&family=Barlow+Condensed:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!--
+        FONT NOTE: "Sequel" is a commercial font. We use Bebas Neue as the closest
+        free match. If you own Sequel, add an @font-face rule and change the
+        --font-display variable below to 'Sequel', sans-serif.
+    -->
+    <style>
+        /* ============================================================
+           RESET & VARIABLES
+        ============================================================ */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            /* — Fonts — */
+            --font-display: 'Bebas Neue', 'Sequel', sans-serif;   /* Headings / display */
+            --font-body:    'Barlow', sans-serif;                  /* Body text */
+            --font-accent:  'Barlow Condensed', sans-serif;        /* Tags, labels */
+
+            /* — Palette — */
+            --red:          #E5172F;
+            --red-light:    #FF3B52;
+            --red-deep:     #A01020;
+            --red-glow:     rgba(229, 23, 47, 0.55);
+            --white:        #FFFFFF;
+            --white-off:    #F0F0F4;
+            --white-dim:    rgba(255,255,255,0.70);
+
+            --bg-dark:      #08080C;
+            --bg-section:   #0C0C12;
+            --bg-glass:     rgba(255,255,255,0.04);
+            --border-glass: rgba(255,255,255,0.07);
+
+            --text-primary:   #F5F5F5;
+            --text-secondary: #B0B0C0;
+            --text-muted:     #65657A;
+
+            --gradient-wr: linear-gradient(135deg, var(--white), var(--red));
+            --gradient-rw: linear-gradient(135deg, var(--red), var(--white));
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scrollbar-width: thin;
+            scrollbar-color: var(--red) var(--bg-dark);
+        }
+        ::-webkit-scrollbar       { width: 5px; }
+        ::-webkit-scrollbar-track { background: var(--bg-dark); }
+        ::-webkit-scrollbar-thumb { background: var(--red); border-radius: 3px; }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.75;
+        }
+
+        ::selection {
+            background: var(--red);
+            color: var(--white);
+        }
+
+        /* ============================================================
+           CURSOR GLOW
+        ============================================================ */
+        .cursor-glow {
+            position: fixed;
+            width: 550px; height: 550px;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            background: radial-gradient(circle, rgba(229,23,47,0.07) 0%, rgba(255,255,255,0.02) 40%, transparent 70%);
+            transform: translate(-50%,-50%);
+            transition: left .25s ease-out, top .25s ease-out;
+        }
+
+        /* ============================================================
+           PARTICLES
+        ============================================================ */
+        .particles { position: fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden; }
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            animation: floatUp linear infinite;
+            opacity: 0;
+        }
+        @keyframes floatUp {
+            0%   { transform: translateY(100vh) scale(0); opacity:0; }
+            10%  { opacity:1; }
+            90%  { opacity:1; }
+            100% { transform: translateY(-10vh) scale(1); opacity:0; }
+        }
+
+        /* ============================================================
+           NAVIGATION
+        ============================================================ */
+        .nav {
+            position: fixed; top:0; left:0; right:0;
+            z-index: 1000;
+            padding: 1.1rem 2.5rem;
+            transition: all .45s cubic-bezier(.4,0,.2,1);
+        }
+        .nav.scrolled {
+            background: rgba(8,8,12,.88);
+            backdrop-filter: blur(22px);
+            -webkit-backdrop-filter: blur(22px);
+            border-bottom: 1px solid var(--border-glass);
+            padding: .75rem 2.5rem;
+        }
+        .nav-inner {
+            max-width: 1400px; margin:0 auto;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .nav-logo {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            letter-spacing: 5px;
+            color: var(--white);
+            text-decoration: none;
+            transition: color .3s;
+        }
+        .nav-logo span { color: var(--red); }
+        .nav-logo:hover { color: var(--red); }
+
+        .nav-links { display:flex; gap:2.2rem; list-style:none; }
+        .nav-links a {
+            font-family: var(--font-accent);
+            font-weight: 600;
+            font-size: .95rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            text-decoration: none;
+            position: relative;
+            padding: .25rem 0;
+            transition: color .3s;
+        }
+        .nav-links a::after {
+            content:'';
+            position: absolute; bottom:0; left:0;
+            width:0; height:2px;
+            background: var(--red);
+            transition: width .35s;
+        }
+        .nav-links a:hover { color: var(--white); }
+        .nav-links a:hover::after { width:100%; }
+        .nav-links a.active { color: var(--red); }
+        .nav-links a.active::after { width:100%; }
+
+        .hamburger {
+            display:none; flex-direction:column; gap:5px;
+            background:none; border:none; cursor:pointer; padding:5px; z-index:1100;
+        }
+        .hamburger span {
+            width:26px; height:2px; background:var(--white);
+            border-radius:2px; transition:all .35s;
+        }
+        .hamburger.open span:nth-child(1) { transform:rotate(45deg) translate(5px,5px); }
+        .hamburger.open span:nth-child(2) { opacity:0; }
+        .hamburger.open span:nth-child(3) { transform:rotate(-45deg) translate(5px,-5px); }
+
+        /* ============================================================
+           HERO SECTION
+        ============================================================ */
+        .hero {
+            min-height: 100vh;
+            display: flex; align-items: center; justify-content: center;
+            position: relative;
+            background: radial-gradient(ellipse at 70% 30%, rgba(229,23,47,.08) 0%, transparent 60%),
+                        radial-gradient(ellipse at 20% 80%, rgba(255,255,255,.03) 0%, transparent 50%),
+                        var(--bg-dark);
+            overflow: hidden;
+        }
+
+        /* Animated grid */
+        .hero-grid {
+            position: absolute; inset:0;
+            background-image:
+                linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+            background-size: 70px 70px;
+            animation: gridDrift 25s linear infinite;
+        }
+        @keyframes gridDrift { to { transform: translate(70px,70px); } }
+
+        /* Orbs */
+        .orb {
+            position: absolute; border-radius:50%; filter:blur(90px);
+            animation: orbPulse 10s ease-in-out infinite alternate;
+        }
+        .orb-1 { width:550px; height:550px; background:rgba(229,23,47,.14); top:-12%; right:-8%; }
+        .orb-2 { width:420px; height:420px; background:rgba(255,255,255,.04); bottom:-10%; left:-6%; animation-delay:-5s; }
+        .orb-3 { width:280px; height:280px; background:rgba(229,23,47,.08); top:55%; left:55%; animation-delay:-3s; }
+
+        @keyframes orbPulse {
+            0%   { transform: translate(0,0)   scale(1);   }
+            50%  { transform: translate(25px,-25px) scale(1.06); }
+            100% { transform: translate(-15px,15px) scale(.95); }
+        }
+
+        /* Content */
+        .hero-content {
+            text-align:center; position:relative; z-index:10;
+            padding:0 2rem; max-width:1050px;
+        }
+
+        .hero-badge {
+            display: inline-flex; align-items:center; gap:.6rem;
+            padding:.55rem 1.6rem;
+            border:1px solid rgba(229,23,47,.35);
+            border-radius:50px;
+            font-family: var(--font-accent);
+            font-size:.88rem; font-weight:600;
+            letter-spacing:3px; text-transform:uppercase;
+            color: var(--red-light);
+            background: rgba(229,23,47,.06);
+            margin-bottom:2rem;
+            animation: fadeUp 1s ease .15s both;
+        }
+        .hero-badge .dot {
+            width:8px; height:8px; background:var(--red);
+            border-radius:50%; animation: blink 2s ease-in-out infinite;
+        }
+        @keyframes blink {
+            0%,100% { opacity:1; box-shadow:0 0 0 0 var(--red-glow); }
+            50%     { opacity:.6; box-shadow:0 0 0 8px transparent;  }
+        }
+
+        .hero-title {
+            font-family: var(--font-display);
+            font-size: clamp(3rem, 9vw, 7.5rem);
+            line-height: 1;
+            letter-spacing: 6px;
+            margin-bottom: 1.2rem;
+            animation: fadeUp 1s ease .35s both;
+        }
+        .hero-title .white { color: var(--white); display:block; }
+        .hero-title .red   { color: var(--red);   display:block; position:relative; }
+        .hero-title .red::after {
+            content:'';
+            position:absolute; bottom:-6px; left:50%; transform:translateX(-50%);
+            width:55%; height:3px;
+            background: var(--red);
+            border-radius:2px; opacity:.45;
+        }
+
+        .hero-sub {
+            font-family: var(--font-accent);
+            font-size: clamp(.95rem, 2.5vw, 1.35rem);
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            margin-bottom: 2.6rem;
+            animation: fadeUp 1s ease .55s both;
+        }
+
+        .hero-btns {
+            display:flex; gap:1.5rem; justify-content:center; flex-wrap:wrap;
+            animation: fadeUp 1s ease .75s both;
+        }
+
+        .btn {
+            display:inline-flex; align-items:center; gap:.5rem;
+            padding:.95rem 2.6rem;
+            border-radius:50px;
+            font-family: var(--font-accent);
+            font-weight:700; font-size:1rem;
+            letter-spacing:2px; text-transform:uppercase;
+            text-decoration:none; cursor:pointer;
+            position:relative; overflow:hidden;
+            transition: all .4s cubic-bezier(.4,0,.2,1);
+            border:none;
+        }
+        .btn::before {
+            content:''; position:absolute; top:50%; left:50%;
+            width:0; height:0; border-radius:50%;
+            background: rgba(255,255,255,.15);
+            transform:translate(-50%,-50%);
+            transition: width .5s, height .5s;
+        }
+        .btn:hover::before { width:320px; height:320px; }
+
+        .btn-red {
+            background: var(--red);
+            color: var(--white);
+            box-shadow: 0 0 35px var(--red-glow), 0 0 70px rgba(229,23,47,.18);
+        }
+        .btn-red:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 0 50px var(--red-glow), 0 0 100px rgba(229,23,47,.28);
+        }
+        .btn-white {
+            background: transparent;
+            color: var(--white);
+            border: 2px solid rgba(255,255,255,.35);
+        }
+        .btn-white:hover {
+            border-color: var(--white);
+            background: rgba(255,255,255,.06);
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 0 30px rgba(255,255,255,.08);
+        }
+
+        /* Scroll indicator */
+        .scroll-hint {
+            position:absolute; bottom:2.2rem; left:50%; transform:translateX(-50%);
+            display:flex; flex-direction:column; align-items:center; gap:.5rem;
+            animation: fadeUp 1s ease 1.1s both;
+        }
+        .scroll-mouse {
+            width:24px; height:38px;
+            border:2px solid rgba(255,255,255,.2);
+            border-radius:12px; position:relative;
+        }
+        .scroll-mouse::after {
+            content:''; position:absolute; top:7px; left:50%;
+            transform:translateX(-50%);
+            width:3px; height:7px;
+            background:var(--red); border-radius:2px;
+            animation: wheel 2s ease-in-out infinite;
+        }
+        @keyframes wheel {
+            to { transform:translateX(-50%) translateY(12px); opacity:0; }
+        }
+        .scroll-label {
+            font-family:var(--font-accent);
+            font-size:.65rem; letter-spacing:4px; text-transform:uppercase;
+            color:var(--text-muted);
+        }
+
+        @keyframes fadeUp {
+            from { opacity:0; transform:translateY(45px); }
+            to   { opacity:1; transform:translateY(0);    }
+        }
+
+        /* ============================================================
+           SHARED SECTION STYLES
+        ============================================================ */
+        .section {
+            padding: 7rem 2rem;
+            position: relative; z-index:1;
+        }
+        .wrap { max-width:1200px; margin:0 auto; }
+
+        .sec-head { text-align:center; margin-bottom:4.5rem; }
+        .sec-label {
+            font-family: var(--font-accent);
+            font-size:.82rem; font-weight:700;
+            letter-spacing:5px; text-transform:uppercase;
+            color: var(--red);
+            margin-bottom:.7rem; display:block;
+        }
+        .sec-title {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            letter-spacing:4px;
+            color: var(--white);
+        }
+        .sec-title em {
+            font-style:normal;
+            color: var(--red);
+        }
+        .sec-line {
+            width:70px; height:3px;
+            background: var(--red);
+            margin:1.1rem auto 0;
+            border-radius:2px;
+        }
+
+        /* ============================================================
+           GLASS CARD MIXIN
+        ============================================================ */
+        .glass {
+            background: var(--bg-glass);
+            border: 1px solid var(--border-glass);
+            border-radius: 22px;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transition: all .45s cubic-bezier(.4,0,.2,1);
+        }
+        .glass:hover {
+            border-color: rgba(229,23,47,.3);
+            box-shadow: 0 12px 50px rgba(229,23,47,.08);
+        }
+
+        /* ============================================================
+           ABOUT
+        ============================================================ */
+        .about { background: linear-gradient(180deg, var(--bg-dark), var(--bg-section)); }
+
+        .about-grid {
+            display:grid; grid-template-columns:1fr 1.2fr;
+            gap:4rem; align-items:center;
+        }
+
+        .avatar-wrap { display:flex; justify-content:center; }
+        .avatar-box {
+            width:300px; height:300px;
+            border-radius:28px;
+            position:relative;
+            transform:rotate(-3deg);
+            transition:transform .5s;
+        }
+        .avatar-box:hover { transform:rotate(0) scale(1.04); }
+        .avatar-inner {
+            width:100%; height:100%;
+            border-radius:28px;
+            background: linear-gradient(135deg, #12121c, #1a0a12);
+            display:flex; align-items:center; justify-content:center;
+            position:relative; overflow:hidden;
+        }
+        .avatar-inner::before {
+            content:''; position:absolute; inset:-2px;
+            border-radius:28px; padding:2px;
+            background: linear-gradient(135deg, var(--red), var(--white), var(--red));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor; mask-composite:exclude;
+            opacity:.5;
+        }
+        .avatar-letters {
+            font-family: var(--font-display);
+            font-size: 5.5rem;
+            letter-spacing:6px;
+            color: var(--red);
+            text-shadow: 0 0 40px var(--red-glow);
+        }
+
+        .about-text h3 {
+            font-family: var(--font-display);
+            font-size:1.8rem; letter-spacing:3px;
+            color:var(--white); margin-bottom:1rem;
+        }
+        .about-text h3 span { color:var(--red); }
+        .about-text p {
+            color:var(--text-secondary); font-size:1.05rem;
+            margin-bottom:1rem; line-height:1.85;
+        }
+        .about-text strong { color:var(--red); font-weight:600; }
+
+        .stats {
+            display:grid; grid-template-columns:repeat(3,1fr);
+            gap:1.2rem; margin-top:2.2rem;
+        }
+        .stat { padding:1.4rem .8rem; text-align:center; border-radius:18px; }
+        .stat-num {
+            font-family:var(--font-display);
+            font-size:2rem; color:var(--red);
+            text-shadow:0 0 15px var(--red-glow);
+        }
+        .stat-lbl {
+            font-family:var(--font-accent);
+            font-size:.78rem; color:var(--text-muted);
+            letter-spacing:1.5px; text-transform:uppercase;
+            margin-top:.2rem;
+        }
+
+        /* ============================================================
+           ESPORTS JOURNEY — TIMELINE
+        ============================================================ */
+        .esports {
+            background: linear-gradient(180deg, var(--bg-section), #0e060a, var(--bg-section));
+            position:relative;
+        }
+        .esports::before {
+            content:''; position:absolute; top:0; left:0; right:0;
+            height:1px;
+            background: linear-gradient(90deg, transparent, var(--red-glow), transparent);
+        }
+
+        .timeline { position:relative; padding-left:3rem; }
+        .timeline::before {
+            content:''; position:absolute; left:0; top:0; bottom:0;
+            width:2px;
+            background: linear-gradient(180deg, var(--red), rgba(255,255,255,.15), var(--red));
+        }
+
+        .tl-item { position:relative; margin-bottom:3rem; padding-left:2.2rem; }
+        .tl-item::before {
+            content:''; position:absolute;
+            left:-3.6rem; top:.55rem;
+            width:14px; height:14px;
+            border-radius:50%;
+            background:var(--red);
+            box-shadow:0 0 18px var(--red-glow);
+            border:3px solid var(--bg-dark);
+        }
+
+        .tl-card { padding:2rem; border-radius:20px; }
+        .tl-card:hover { transform:translateX(10px); }
+        .tl-card h4 {
+            font-family:var(--font-display);
+            font-size:1.35rem; letter-spacing:2px;
+            color:var(--white); margin-bottom:.55rem;
+        }
+        .tl-card p { color:var(--text-secondary); line-height:1.85; }
+
+        .tag {
+            display:inline-block;
+            padding:.25rem .8rem;
+            border-radius:50px;
+            font-family:var(--font-accent);
+            font-size:.78rem; font-weight:600;
+            letter-spacing:1px;
+            margin-right:.45rem; margin-top:.8rem;
+        }
+        .tag-r { background:rgba(229,23,47,.12); color:var(--red-light); border:1px solid rgba(229,23,47,.22); }
+        .tag-w { background:rgba(255,255,255,.06); color:var(--white-dim); border:1px solid rgba(255,255,255,.12); }
+
+        /* ============================================================
+           AUTOMOTIVE
+        ============================================================ */
+        .automotive { background: linear-gradient(180deg, var(--bg-section), var(--bg-dark)); }
+
+        .auto-grid {
+            display:grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px,1fr));
+            gap:2rem;
+        }
+        .auto-card {
+            padding:2.5rem 2rem;
+            border-radius:24px;
+            position:relative; overflow:hidden;
+        }
+        .auto-card::before {
+            content:''; position:absolute; top:0; left:0; right:0; height:3px;
+            background: var(--red);
+            transform:scaleX(0); transform-origin:left;
+            transition:transform .5s;
+        }
+        .auto-card:hover::before { transform:scaleX(1); }
+        .auto-card:hover { transform:translateY(-8px); }
+        .auto-card .icon { font-size:2.8rem; margin-bottom:1.3rem; display:block; }
+        .auto-card h4 {
+            font-family:var(--font-display);
+            font-size:1.3rem; letter-spacing:2px;
+            color:var(--white); margin-bottom:.7rem;
+        }
+        .auto-card p { color:var(--text-secondary); line-height:1.85; }
+
+        /* ============================================================
+           SKILLS
+        ============================================================ */
+        .skills {
+            background: linear-gradient(180deg, var(--bg-dark), var(--bg-section));
+            position:relative;
+        }
+        .skills::before {
+            content:''; position:absolute; top:0; left:0; right:0;
+            height:1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,.08), transparent);
+        }
+
+        .skills-grid {
+            display:grid;
+            grid-template-columns:repeat(auto-fit, minmax(270px,1fr));
+            gap:1.8rem;
+        }
+        .skill { padding:1.8rem; border-radius:18px; }
+        .skill-name {
+            font-family:var(--font-accent);
+            font-size:1.05rem; font-weight:600;
+            color:var(--white);
+            margin-bottom:.8rem;
+            display:flex; align-items:center; gap:.5rem;
+        }
+        .bar-bg {
+            width:100%; height:5px;
+            background:rgba(255,255,255,.06);
+            border-radius:3px; overflow:hidden;
+        }
+        .bar-fill {
+            height:100%; border-radius:3px;
+            background: linear-gradient(90deg, var(--red), var(--red-light));
+            width:0;
+            transition: width 1.4s cubic-bezier(.4,0,.2,1);
+            box-shadow: 0 0 12px var(--red-glow);
+        }
+        .bar-pct {
+            font-family:var(--font-display);
+            font-size:.8rem; color:var(--text-muted);
+            margin-top:.35rem; text-align:right;
+        }
+
+        /* ============================================================
+           HOBBIES
+        ============================================================ */
+        .hobbies { background: linear-gradient(180deg, var(--bg-section), #0e060a); }
+
+        .hobbies-grid {
+            display:grid;
+            grid-template-columns:repeat(auto-fit, minmax(180px,1fr));
+            gap:1.5rem;
+        }
+        .hobby {
+            padding:2rem 1.2rem; text-align:center;
+            border-radius:20px; cursor:default;
+        }
+        .hobby:hover { transform:translateY(-8px) scale(1.03); }
+        .hobby .h-icon { font-size:2.4rem; margin-bottom:.9rem; display:block; }
+        .hobby h4 {
+            font-family:var(--font-accent);
+            font-size:1.05rem; font-weight:700;
+            color:var(--white); letter-spacing:1px;
+        }
+        .hobby p { color:var(--text-muted); font-size:.82rem; margin-top:.3rem; }
+
+        /* ============================================================
+           GOALS
+        ============================================================ */
+        .goals {
+            background: linear-gradient(180deg, #0e060a, var(--bg-section));
+            position:relative;
+        }
+        .goals::before {
+            content:''; position:absolute; top:0; left:0; right:0;
+            height:1px;
+            background: linear-gradient(90deg, transparent, var(--red-glow), transparent);
+        }
+
+        .goals-grid {
+            display:grid;
+            grid-template-columns:repeat(auto-fit, minmax(320px,1fr));
+            gap:2rem;
+        }
+        .goal {
+            padding:2.5rem 2rem;
+            border-radius:24px;
+            position:relative; overflow:hidden;
+        }
+        .goal::after {
+            content:''; position:absolute; bottom:0; left:0; right:0;
+            height:3px; background:var(--red);
+            transform:scaleX(0); transition:transform .5s;
+        }
+        .goal:hover::after { transform:scaleX(1); }
+        .goal:hover { transform:translateY(-5px); }
+        .goal-num {
+            font-family:var(--font-display);
+            font-size:3.5rem; line-height:1;
+            color:var(--red); opacity:.2;
+            margin-bottom:.8rem;
+        }
+        .goal h4 {
+            font-family:var(--font-display);
+            font-size:1.15rem; letter-spacing:2px;
+            color:var(--white); margin-bottom:.5rem;
+        }
+        .goal p { color:var(--text-secondary); line-height:1.75; }
+
+        /* ============================================================
+           CONTACT
+        ============================================================ */
+        .contact { background: linear-gradient(180deg, var(--bg-section), var(--bg-dark)); }
+
+        .contact-body { text-align:center; }
+        .contact-intro {
+            color:var(--text-secondary); font-size:1.15rem;
+            max-width:600px; margin:0 auto 3rem; line-height:1.85;
+        }
+
+        .social-links {
+            display:flex; justify-content:center; gap:1.4rem;
+            flex-wrap:wrap; margin-bottom:3rem;
+        }
+        .social-link {
+            display:inline-flex; align-items:center; gap:.7rem;
+            padding:1rem 2rem;
+            border-radius:16px;
+            color:var(--white);
+            text-decoration:none;
+            font-family:var(--font-accent);
+            font-weight:600; font-size:1rem; letter-spacing:1px;
+            transition:all .4s;
+        }
+        .social-link:hover {
+            transform:translateY(-5px);
+            border-color:rgba(229,23,47,.45);
+            box-shadow:0 10px 40px rgba(229,23,47,.12);
+        }
+        .social-link .s-icon { font-size:1.25rem; }
+
+        /* ============================================================
+           FOOTER
+        ============================================================ */
+        .footer {
+            background:#040406;
+            border-top:1px solid var(--border-glass);
+            padding:2.5rem 2rem; text-align:center;
+        }
+        .footer-logo {
+            font-family:var(--font-display);
+            font-size:1.3rem; letter-spacing:5px;
+            color:var(--white); margin-bottom:.6rem;
+        }
+        .footer-logo span { color:var(--red); }
+        .footer p { color:var(--text-muted); font-size:.82rem; }
+        .footer .heart { color:var(--red); animation:heartbeat 1.4s ease-in-out infinite; display:inline-block; }
+        @keyframes heartbeat { 50% { transform:scale(1.25); } }
+
+        /* ============================================================
+           SCROLL REVEAL
+        ============================================================ */
+        .rv  { opacity:0; transform:translateY(50px); transition: all .8s cubic-bezier(.4,0,.2,1); }
+        .rv.show { opacity:1; transform:translateY(0); }
+        .rv-d1 { transition-delay:.1s; }
+        .rv-d2 { transition-delay:.2s; }
+        .rv-d3 { transition-delay:.3s; }
+        .rv-d4 { transition-delay:.4s; }
+
+        /* ============================================================
+           RESPONSIVE
+        ============================================================ */
+        @media(max-width:1024px){
+            .about-grid { grid-template-columns:1fr; gap:3rem; }
+            .avatar-box { width:240px; height:240px; }
+            .avatar-letters { font-size:4.5rem; }
+        }
+        @media(max-width:768px){
+            .section { padding:5rem 1.5rem; }
+            .nav { padding:.85rem 1.2rem; }
+            .nav.scrolled { padding:.65rem 1.2rem; }
+
+            .nav-links {
+                position:fixed; top:0; right:-100%; width:72%; max-width:300px; height:100vh;
+                background:rgba(8,8,12,.97);
+                backdrop-filter:blur(22px);
+                flex-direction:column; padding:5rem 2rem 2rem; gap:1.5rem;
+                transition:right .4s cubic-bezier(.4,0,.2,1);
+                border-left:1px solid var(--border-glass);
+            }
+            .nav-links.open { right:0; }
+            .hamburger { display:flex; }
+
+            .hero-btns { flex-direction:column; align-items:center; }
+            .auto-grid, .goals-grid { grid-template-columns:1fr; }
+            .hobbies-grid { grid-template-columns:repeat(2,1fr); }
+            .social-links { flex-direction:column; align-items:center; }
+            .stats { gap:.7rem; }
+            .stat { padding:1rem .5rem; }
+            .stat-num { font-size:1.5rem; }
+        }
+        @media(max-width:480px){
+            .nav-logo { font-size:1.5rem; letter-spacing:3px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Cursor glow -->
+<div class="cursor-glow" id="glow"></div>
+
+<!-- Particles -->
+<div class="particles" id="particles"></div>
+
+<!-- ==================== NAV ==================== -->
+<nav class="nav" id="nav">
+    <div class="nav-inner">
+        <a href="#hero" class="nav-logo">KRRISH<span>.</span></a>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#about"      onclick="closeNav()">About</a></li>
+            <li><a href="#esports"    onclick="closeNav()">Esports</a></li>
+            <li><a href="#automotive" onclick="closeNav()">Rides</a></li>
+            <li><a href="#skills"     onclick="closeNav()">Skills</a></li>
+            <li><a href="#hobbies"    onclick="closeNav()">Hobbies</a></li>
+            <li><a href="#goals"      onclick="closeNav()">Goals</a></li>
+            <li><a href="#contact"    onclick="closeNav()">Contact</a></li>
+        </ul>
+        <button class="hamburger" id="hamburger" aria-label="Menu">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+</nav>
+
+<!-- ==================== HERO ==================== -->
+<section class="hero" id="hero">
+    <div class="hero-grid"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <div class="hero-content">
+        <div class="hero-badge"><span class="dot"></span> Rishihood University · First Year</div>
+        <h1 class="hero-title">
+            <span class="white">I'M</span>
+            <span class="red">KRRISH KUMAR</span>
+        </h1>
+        <p class="hero-sub">Esports Competitor &nbsp;·&nbsp; Automotive Enthusiast &nbsp;·&nbsp; Tech Explorer</p>
+        <div class="hero-btns">
+            <a href="#about"   class="btn btn-red">Discover My World</a>
+            <a href="#contact" class="btn btn-white">Get In Touch</a>
+        </div>
+    </div>
+
+    <div class="scroll-hint">
+        <div class="scroll-mouse"></div>
+        <span class="scroll-label">Scroll</span>
+    </div>
+</section>
+
+<!-- ==================== ABOUT ==================== -->
+<section class="section about" id="about">
+    <div class="wrap">
+        <div class="sec-head rv">
+            <span class="sec-label">// Who I Am</span>
+            <h2 class="sec-title">ABOUT <em>ME</em></h2>
+            <div class="sec-line"></div>
+        </div>
+
+        <div class="about-grid">
+            <div class="avatar-wrap rv rv-d1">
+                <div class="avatar-box">
+                    <div class="avatar-inner">
+                        <span class="avatar-letters">KK</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="about-text rv rv-d2">
+                <h3>GAMER. RIDER. <span>DREAMER.</span></h3>
+                <p>
+                    Hey there! I'm <strong>Krrish Kumar</strong>, a first-year student at
+                    <strong>Rishihood University</strong>. I live at the intersection of adrenaline and ambition —
+                    whether it's clutching a 1v4 in BGMI or admiring the raw engineering behind a superbike.
+                </p>
+                <p>
+                    I believe the same instincts that make a great esports player — quick thinking, precision,
+                    adaptability — are what drive my fascination for high-performance machines. I'm here to
+                    build, compete, and leave a mark.
+                </p>
+                <div class="stats">
+                    <div class="stat glass">
+                        <div class="stat-num" data-target="500" data-suffix="+">0</div>
+                        <div class="stat-lbl">BGMI Hours</div>
+                    </div>
+                    <div class="stat glass">
+                        <div class="stat-num" data-target="50" data-suffix="+">0</div>
+                        <div class="stat-lbl">Scrims Played</div>
+                    </div>
+                    <div class="stat glass">
+                        <div class="stat-num" data-target="0" data-symbol="∞">∞</div>
+                        <div class="stat-lbl">Passion</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== ESPORTS ==================== -->
+<section class="section esports" id="esports">
+    <div class="wrap">
+        <div class="sec-head rv">
+            <span class="sec-label">// Battle-Tested</span>
+            <h2 class="sec-title">ESPORTS <em>JOURNEY</em></h2>
+            <div class="sec-line"></div>
+        </div>
+
+        <div class="timeline">
+            <div class="tl-item rv">
+                <div class="tl-card glass">
+                    <h4>🎮 BGMI COMPETITIVE ARC</h4>
+                    <p>
+                        What started as casual matches quickly evolved into a burning competitive drive. BGMI isn't
+                        just a game for me — it's a battlefield where strategy, reflexes, and teamwork collide. I've
+                        been grinding ranked matches, perfecting rotations, and studying the meta to elevate my gameplay.
+                    </p>
+                    <span class="tag tag-r">Battle Royale</span>
+                    <span class="tag tag-w">Competitive</span>
+                    <span class="tag tag-r">Mobile Esports</span>
+                </div>
+            </div>
+
+            <div class="tl-item rv rv-d1">
+                <div class="tl-card glass">
+                    <h4>⚔️ SCRIM EXPERIENCE</h4>
+                    <p>
+                        Playing multiple BGMI scrims against competitive squads has sharpened my game sense and
+                        communication. Every scrim is a lesson — in zone control, peek positioning, and clutch
+                        decision-making under pressure. I thrive in high-stakes environments.
+                    </p>
+                    <span class="tag tag-w">Scrims</span>
+                    <span class="tag tag-r">Team Strategy</span>
+                    <span class="tag tag-w">IGL Potential</span>
+                </div>
+            </div>
+
+            <div class="tl-item rv rv-d2">
+                <div class="tl-card glass">
+                    <h4>🧠 COMPETITIVE MINDSET</h4>
+                    <p>
+                        Esports taught me discipline, patience, and the hunger to improve. I analyze my gameplay,
+                        study pro players, learn new strategies, and push my limits every day. The goal isn't just
+                        to play — it's to compete at the highest level.
+                    </p>
+                    <span class="tag tag-r">Game Sense</span>
+                    <span class="tag tag-w">Adaptability</span>
+                    <span class="tag tag-r">Growth Mindset</span>
+                </div>
+            </div>
+
+            <div class="tl-item rv rv-d3">
+                <div class="tl-card glass">
+                    <h4>🏆 FUTURE ASPIRATIONS</h4>
+                    <p>
+                        I'm working towards competing in official BGMI tournaments and building a reputation in the
+                        Indian esports scene. From scrims to tournaments — the grind never stops. Watch this space.
+                    </p>
+                    <span class="tag tag-w">Tournaments</span>
+                    <span class="tag tag-r">Pro Scene</span>
+                    <span class="tag tag-w">Content Creation</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== AUTOMOTIVE ==================== -->
+<section class="section automotive" id="automotive">
+    <div class="wrap">
+        <div class="sec-head rv">
+            <span class="sec-label">// Built for Speed</span>
+            <h2 class="sec-title">AUTOMOTIVE <em>PASSION</em></h2>
+            <div class="sec-line"></div>
+        </div>
+
+        <div class="auto-grid">
+            <div class="auto-card glass rv">
+                <span class="icon">🏍️</span>
+                <h4>SUPERBIKES & MOTORCYCLES</h4>
+                <p>
+                    There's nothing like the roar of a twin-cylinder engine cutting through the wind. From the
+                    Kawasaki Ninja to the Royal Enfield Interceptor, I'm fascinated by motorcycle engineering —
+                    the power-to-weight ratio, lean angles, and the raw connection between man and machine.
+                </p>
+            </div>
+            <div class="auto-card glass rv rv-d1">
+                <span class="icon">🏎️</span>
+                <h4>PERFORMANCE CARS</h4>
+                <p>
+                    Horsepower, torque curves, turbochargers, and aerodynamics — I geek out over every detail.
+                    Whether it's the elegance of a BMW M series, the brutality of a Mustang GT, or the precision
+                    of a GTR, performance cars represent the pinnacle of automotive art.
+                </p>
+            </div>
+            <div class="auto-card glass rv rv-d2">
+                <span class="icon">🔧</span>
+                <h4>ENGINE & DESIGN</h4>
+                <p>
+                    I dive deep into engine specs, transmission types, suspension geometry, and chassis design.
+                    Understanding how a naturally aspirated V8 differs from a turbocharged inline-4 isn't just
+                    knowledge — it's passion. Every blueprint tells a story.
+                </p>
+            </div>
+            <div class="auto-card glass rv rv-d3">
+                <span class="icon">🏁</span>
+                <h4>CAR & BIKE CULTURE</h4>
+                <p>
+                    From F1 race weekends to midnight meetups, automobile culture is a lifestyle. I follow
+                    motorsport closely, keep up with new launches, and dream of building a garage filled with
+                    iconic machines that define speed and style.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== SKILLS ==================== -->
+<section class="section skills" id="skills">
+    <div class="wrap">
+        <div class="sec-head rv">
+            <span class="sec-label">// My Arsenal</span>
+            <h2 class="sec-title">SKILLS & <em>ABILITIES</em></h2>
+            <div class="sec-line"></div>
+        </div>
+
+        <div class="skills-grid">
+            <div class="skill glass rv">
+                <div class="skill-name">🎯 BGMI / FPS Gameplay</div>
+                <div class="bar-bg"><div class="bar-fill" data-w="92"></div></div>
+                <div class="bar-pct">92%</div>
+            </div>
+            <div class="skill glass rv rv-d1">
+                <div class="skill-name">🧠 Game Strategy & IGL</div>
+                <div class="bar-bg"><div class="bar-fill" data-w="85"></div></div>
+                <div class="bar-pct">85%</div>
+            </div>
+            <div class="skill glass rv rv-d2">
+                <div class="skill-name">🤝 Team Communication</div>
+                <div class="bar-bg"><div class="bar-fill" data-w="88"></div></div>
+                <div class="bar-pct">88%</div>
+            </div>
+            <div class="skill glass rv rv-d1">
+                <div class="skill-name">🏎️ Automotive Knowledge</div>
+                <div class="bar-bg"><div class="bar-fill" data-w="82"></div></div>
+                <div class="bar-pct">82%</div>
+            </div>
+            <div class="skill glass rv rv-d2">
+                <div class="skill-name">⚡ Quick Reflexes & Precision</div>
+                <div class="bar-bg"><div class="bar-fill" data-w="94"></div></div>
+                <div class="bar-pct">94%</div>
+            </div>
+            <div class="skill glass rv rv-d3">
+                <div class="skill-name">🔥 Clutch Under Pressure</div>
+                <div class="bar-bg"><div class="bar-fill" data-w="87"></div></div>
+                <div class="bar-pct">87%</div>
+            </div>
+            <div class="skill glass rv rv-d2">
+                <div class="skill-name">📊 Analytical Thinking</div>
+                <div class="bar-bg"><div class="bar-fill" data-w="80"></div></div>
+                <div class="bar-pct">80%</div>
+            </div>
+            <div class="skill glass rv rv-d3">
+                <div class="skill-name">🎨 Creative Problem Solving</div>
+                <div class="bar-bg"><div class="bar-fill" data-w="78"></div></div>
+                <div class="bar-pct">78%</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== HOBBIES ==================== -->
+<section class="section hobbies" id="hobbies">
+    <div class="wrap">
+        <div class="sec-head rv">
+            <span class="sec-label">// Off the Clock</span>
+            <h2 class="sec-title">HOBBIES & <em>INTERESTS</em></h2>
+            <div class="sec-line"></div>
+        </div>
+
+        <div class="hobbies-grid">
+            <div class="hobby glass rv">
+                <span class="h-icon">🎮</span>
+                <h4>Competitive Gaming</h4>
+                <p>BGMI, FPS titles, strategy</p>
+            </div>
+            <div class="hobby glass rv rv-d1">
+                <span class="h-icon">🏍️</span>
+                <h4>Bike Riding</h4>
+                <p>Long rides, superbike culture</p>
+            </div>
+            <div class="hobby glass rv rv-d2">
+                <span class="h-icon">🏎️</span>
+                <h4>Auto Exploration</h4>
+                <p>Cars, specs, motorsport</p>
+            </div>
+            <div class="hobby glass rv rv-d3">
+                <span class="h-icon">🏁</span>
+                <h4>Formula 1</h4>
+                <p>Race strategy, engineering</p>
+            </div>
+            <div class="hobby glass rv rv-d1">
+                <span class="h-icon">🎵</span>
+                <h4>Music</h4>
+                <p>Bass-heavy, lo-fi, hip-hop</p>
+            </div>
+            <div class="hobby glass rv rv-d2">
+                <span class="h-icon">📺</span>
+                <h4>Streaming & Content</h4>
+                <p>Clips, highlights, edits</p>
+            </div>
+            <div class="hobby glass rv rv-d3">
+                <span class="h-icon">💻</span>
+                <h4>Tech & Gadgets</h4>
+                <p>New tech, gaming peripherals</p>
+            </div>
+            <div class="hobby glass rv rv-d4">
+                <span class="h-icon">💪</span>
+                <h4>Fitness</h4>
+                <p>Staying sharp, body & mind</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== GOALS ==================== -->
+<section class="section goals" id="goals">
+    <div class="wrap">
+        <div class="sec-head rv">
+            <span class="sec-label">// The Vision</span>
+            <h2 class="sec-title">PERSONAL <em>GOALS</em></h2>
+            <div class="sec-line"></div>
+        </div>
+
+        <div class="goals-grid">
+            <div class="goal glass rv">
+                <div class="goal-num">01</div>
+                <h4>COMPETE IN BGMI TOURNAMENTS</h4>
+                <p>Qualify and compete in official BGMI esports tournaments. Building skills, team synergy, and a competitive portfolio to break into the Indian pro scene.</p>
+            </div>
+            <div class="goal glass rv rv-d1">
+                <div class="goal-num">02</div>
+                <h4>BUILD A PERSONAL BRAND</h4>
+                <p>Create a recognizable presence in the gaming and automotive communities through content creation, social media, and connecting with like-minded enthusiasts.</p>
+            </div>
+            <div class="goal glass rv rv-d2">
+                <div class="goal-num">03</div>
+                <h4>OWN MY DREAM MACHINES</h4>
+                <p>From a Kawasaki ZX-10R to a BMW M4 — I'm working toward a future where my garage matches my ambitions. Every dream starts with a goal.</p>
+            </div>
+            <div class="goal glass rv rv-d3">
+                <div class="goal-num">04</div>
+                <h4>EXCEL ACADEMICALLY</h4>
+                <p>Balance passion with academics at Rishihood University. Gain knowledge, build connections, and leverage education to fuel every ambition.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== CONTACT ==================== -->
+<section class="section contact" id="contact">
+    <div class="wrap">
+        <div class="sec-head rv">
+            <span class="sec-label">// Let's Connect</span>
+            <h2 class="sec-title">GET IN <em>TOUCH</em></h2>
+            <div class="sec-line"></div>
+        </div>
+
+        <div class="contact-body rv">
+            <p class="contact-intro">
+                Whether you want to squad up in BGMI, talk cars and bikes, or just connect —
+                I'm always up for a good conversation. Drop a message!
+            </p>
+
+            <div class="social-links">
+                <a href="mailto:krrish@example.com" class="social-link glass">
+                    <span class="s-icon">📧</span> Email Me
+                </a>
+                <a href="https://instagram.com/" target="_blank" class="social-link glass">
+                    <span class="s-icon">📸</span> Instagram
+                </a>
+                <a href="https://discord.com/" target="_blank" class="social-link glass">
+                    <span class="s-icon">💬</span> Discord
+                </a>
+                <a href="https://youtube.com/" target="_blank" class="social-link glass">
+                    <span class="s-icon">🎬</span> YouTube
+                </a>
+                <a href="https://twitter.com/" target="_blank" class="social-link glass">
+                    <span class="s-icon">🐦</span> Twitter / X
+                </a>
+            </div>
+
+            <a href="mailto:krrish@example.com" class="btn btn-red">Say Hello 👋</a>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== FOOTER ==================== -->
+<footer class="footer">
+    <div class="footer-logo">KRRISH <span>KUMAR</span></div>
+    <p>Crafted with <span class="heart">❤️</span> — Esports Meets Horsepower</p>
+    <p style="margin-top:.4rem;opacity:.45;">© 2026 Krrish Kumar. All rights reserved.</p>
+</footer>
+
+<!-- ============================================================
+     JAVASCRIPT
+============================================================ -->
+<script>
+(function(){
+    // ——— Cursor glow ———
+    const glow = document.getElementById('glow');
+    document.addEventListener('mousemove', e => {
+        glow.style.left = e.clientX + 'px';
+        glow.style.top  = e.clientY + 'px';
+    });
+
+    // ——— Particles ———
+    const pc = document.getElementById('particles');
+    const colors = ['rgba(229,23,47,.5)','rgba(255,255,255,.25)','rgba(229,23,47,.3)','rgba(255,255,255,.12)'];
+    for(let i=0;i<55;i++){
+        const p = document.createElement('div');
+        p.className = 'particle';
+        p.style.left = Math.random()*100+'%';
+        const s = Math.random()*2.5+1;
+        p.style.width = s+'px'; p.style.height = s+'px';
+        p.style.backgroundColor = colors[Math.floor(Math.random()*colors.length)];
+        p.style.animationDuration = (Math.random()*18+10)+'s';
+        p.style.animationDelay   = (Math.random()*12)+'s';
+        pc.appendChild(p);
+    }
+
+    // ——— Navbar scroll ———
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+        nav.classList.toggle('scrolled', window.scrollY > 60);
+    });
+
+    // ——— Mobile menu ———
+    const ham = document.getElementById('hamburger');
+    const nl  = document.getElementById('navLinks');
+    ham.addEventListener('click', () => {
+        ham.classList.toggle('open');
+        nl.classList.toggle('open');
+    });
+    window.closeNav = () => { ham.classList.remove('open'); nl.classList.remove('open'); };
+
+    // ——— Scroll reveal ———
+    const rvs = document.querySelectorAll('.rv');
+    const reveal = () => {
+        const wh = window.innerHeight;
+        rvs.forEach(el => {
+            if(el.getBoundingClientRect().top < wh - 80) el.classList.add('show');
+        });
+    };
+    window.addEventListener('scroll', reveal);
+    reveal();
+
+    // ——— Skill bars ———
+    const bars = document.querySelectorAll('.bar-fill');
+    const fillBars = () => {
+        bars.forEach(b => {
+            if(b.getBoundingClientRect().top < window.innerHeight - 40){
+                b.style.width = b.dataset.w + '%';
+            }
+        });
+    };
+    window.addEventListener('scroll', fillBars);
+    fillBars();
+
+    // ——— Counter animation ———
+    const counters = document.querySelectorAll('.stat-num');
+    const animateCounters = () => {
+        counters.forEach(c => {
+            if(c.dataset.done || c.dataset.symbol) return;
+            if(c.getBoundingClientRect().top > window.innerHeight) return;
+            c.dataset.done = '1';
+            const target = +c.dataset.target;
+            const suffix = c.dataset.suffix || '';
+            let cur = 0; const inc = target / 55;
+            const t = setInterval(() => {
+                cur += inc;
+                if(cur >= target){ c.textContent = target + suffix; clearInterval(t); }
+                else c.textContent = Math.floor(cur) + suffix;
+            }, 18);
+        });
+    };
+    window.addEventListener('scroll', animateCounters);
+    animateCounters();
+
+    // ——— Active nav link ———
+    const sections = document.querySelectorAll('.section, .hero');
+    const links    = document.querySelectorAll('.nav-links a');
+    window.addEventListener('scroll', () => {
+        let cur = '';
+        sections.forEach(s => { if(window.scrollY >= s.offsetTop - 220) cur = s.id; });
+        links.forEach(a => {
+            a.classList.toggle('active', a.getAttribute('href') === '#' + cur);
+        });
+    });
+
+    // ——— Parallax orbs ———
+    window.addEventListener('scroll', () => {
+        const sy = window.scrollY;
+        document.querySelectorAll('.orb').forEach((o,i) => {
+            o.style.transform = 'translateY(' + sy * (i+1) * .12 + 'px)';
+        });
+    });
+
+    // ——— Card tilt ———
+    document.querySelectorAll('.auto-card, .goal').forEach(card => {
+        card.addEventListener('mousemove', e => {
+            const r = card.getBoundingClientRect();
+            const rx = ((e.clientY - r.top) - r.height/2) / 18;
+            const ry = (r.width/2 - (e.clientX - r.left)) / 18;
+            card.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-8px)`;
+        });
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = '';
+        });
+    });
+})();
+</script>
+</body>
+</html>
